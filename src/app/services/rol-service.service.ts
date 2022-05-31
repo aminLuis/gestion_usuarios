@@ -23,4 +23,14 @@ export class RolServiceService {
     );
   }
 
+  getRol(id:BigInt):Observable<Rol>{
+    return this.http.get<Rol>(URL+"/"+id)
+    .pipe(
+      catchError(error=>{
+        console.log(error);
+        return throwError(error);
+      })
+    );
+  }
+
 }

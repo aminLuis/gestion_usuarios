@@ -18,7 +18,7 @@ export class UsarioComponent implements OnInit {
   roles: Rol[]=[];
   subscription: any;
   activos: String[]=['A','B'];
-  @Input() nombre!: String;
+  nombre: String = '';
 
   constructor(private service_usuario:UsuarioServiceService,
      public form:FormBuilder,
@@ -83,6 +83,7 @@ export class UsarioComponent implements OnInit {
 
     
   }
+
 
   limpiar(){
     this.nombre = '';

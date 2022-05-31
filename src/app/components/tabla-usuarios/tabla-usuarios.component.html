@@ -1,4 +1,3 @@
-
 <div *ngIf="usuarios.length==0" class="alert alert-secondary mt-4 elevacion" role="alert">
   Aún no hay usuarios registrados !!
 </div>
@@ -36,10 +35,13 @@
               <i class="fa-solid fa-pen"></i>
             </button>
 
-            <button class="btn btn-secondary ms-2 radius elevacion"
-            (click)="delete_usuario(usuario.id)"
-            >
+            <button class="btn btn-secondary ms-2 radius elevacion" (click)="delete_usuario(usuario.id)">
               <i class="fa-solid fa-trash-can"></i>
+            </button>
+
+            <button class="btn btn-primary ms-2 radius elevacion" data-bs-toggle="modal"
+              data-bs-target="#modal-detalles" (click)="cargar_rol(usuario.id_rol); cargar_datos(usuario)">
+              <i class="fa-solid fa-circle-info"></i>
             </button>
 
           </td>
@@ -49,12 +51,8 @@
     </table>
 
     <div class="paginate">
-      <pagination-controls
-        previousLabel="Anterior" 
-        nextLabel="Siguiente"
-        (pageChange)="onTableDataChange($event)"
-      >
-    </pagination-controls>
+      <pagination-controls previousLabel="Anterior" nextLabel="Siguiente" (pageChange)="onTableDataChange($event)">
+      </pagination-controls>
     </div>
 
   </div>
@@ -89,7 +87,7 @@
               <label for="">Rol</label>
               <select *ngIf="usuario_editar" [(ngModel)]="usuario_editar.id_rol" formControlName="id_rol"
                 class="form-control">
-                <option selected value="" disabled>Seleccione un rol</option>
+                <option selected value="" disabled></option>
                 <option *ngFor="let rol of roles" [value]="rol.id">{{rol.nombre}}</option>
               </select>
 
@@ -101,7 +99,7 @@
               <label for="">Activo</label>
               <select *ngIf="usuario_editar" [(ngModel)]="usuario_editar.activo" formControlName="activo"
                 class="form-control">
-                <option selected value="" disabled>Seleccione activo</option>
+                <option selected value="" disabled></option>
                 <option *ngFor="let activo of activos" [value]="activo">{{activo}}</option>
               </select>
             </div>
@@ -126,3 +124,48 @@
 </div>
 
 <!-- Final modal editar -->
+
+
+<!--Inicio modal detalles -->
+
+<div class="modal fade" id="modal-detalles" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-secondary">
+        <h5 class="modal-title text-white" id="exampleModalLabel">Detalle usuario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <div class="list-group">
+          <a *ngIf="usuario_editar"
+            class="list-group-item list-group-item-action elevacion">
+            <strong>Nombre: </strong>{{usuario_editar.nombre}}
+          </a>
+        </div>
+
+        <div class="list-group">
+          <a *ngIf="usuario_editar" class="list-group-item list-group-item-action mt-1 elevacion">
+            <strong>Activo: </strong>{{usuario_editar.activo}}
+          </a>
+        </div>
+
+        <div class="list-group">
+          <a *ngIf="usuario_editar" class="list-group-item list-group-item-action mt-1 elevacion">
+            <strong>Correo: </strong>{{usuario_editar.correo}}
+          </a>
+        </div>
+
+        <div class="list-group">
+          <a *ngIf="rol" class="list-group-item list-group-item-action mt-1 elevacion">
+            <strong>Rol: </strong>{{rol.nombre}}
+          </a>
+        </div>
+
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<!-- Final modal detalles -->

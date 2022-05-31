@@ -17,6 +17,7 @@ export class TablaUsuariosComponent implements OnInit {
   form_usuario_editar: FormGroup;
   activos: String[]=['A','B'];
   roles: Rol[]=[];
+  @Input() rol!:Rol;
   current_page: number=1;
   tableSize: number = 1;
   tableSizes: any = [3, 6, 9, 12];
@@ -73,6 +74,12 @@ export class TablaUsuariosComponent implements OnInit {
   cargar_datos(usuario:Usuario){
     this.usuario_editar = usuario;
     console.log(this.usuario_editar)
+  }
+
+  cargar_rol(id:BigInt){
+    this.service_rol.getRol(id).subscribe(res=>{
+      this.rol = res;
+    })
   }
 
   listar_roles(){
