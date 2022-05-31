@@ -1,9 +1,10 @@
 export interface Usuario{
     id:BigInt,
-    rol:Rol,
+    id_rol:BigInt,
     nombre:String,
-    estado:CharacterData,
-    correo:String   
+    activo:CharacterData,
+    correo:String
+    rol:Rol,   
 }
 
 export interface Rol{

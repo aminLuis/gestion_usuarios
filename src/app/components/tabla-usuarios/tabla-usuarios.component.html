@@ -1,33 +1,128 @@
-<table class="table table-sm caption-top" style="margin-top: 50px;">
 
-    <thead>
+<div *ngIf="usuarios.length==0" class="alert alert-secondary mt-4 elevacion" role="alert">
+  Aún no hay usuarios registrados !!
+</div>
+
+<div *ngIf="usuarios.length>0" class="card mt-4 elevacion">
+
+  <div class="card-body">
+
+    <table class="table table-hover">
+
+      <thead>
         <tr>
-            <th>#</th>
-            <th>Nombre usuario</th>
-            <th>Activo</th>
-            <th>Correo</th>
-            <th>Acciones</th>
+          <th>#</th>
+          <th>Nombre usuario</th>
+          <th>Activo</th>
+          <th>Correo</th>
+          <th>Acciones</th>
         </tr>
-    </thead>
+      </thead>
 
-    <tbody>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>
+      <tbody>
+        <tr *ngFor="let usuario of usuarios | paginate :{
+          itemsPerPage: 4,
+          currentPage: current_page
+        };
+        let i = index">
+          <td>{{i+1}}</td>
+          <td>{{usuario.nombre}}</td>
+          <td>{{usuario.activo}}</td>
+          <td>{{usuario.correo}}</td>
+          <td>
 
-                <button class="btn btn-primary radius elevacion">
-                    <i class="fa-solid fa-pen"></i>
-                </button>
+            <button class="btn btn-primary radius elevacion" data-bs-toggle="modal" data-bs-target="#modal-editar"
+              (click)="cargar_datos(usuario); listar_roles()">
+              <i class="fa-solid fa-pen"></i>
+            </button>
 
-                <button class="btn btn-secondary ms-2 radius elevacion">
-                    <i class="fa-solid fa-trash-can"></i>
-                </button>
+            <button class="btn btn-secondary ms-2 radius elevacion"
+            (click)="delete_usuario(usuario.id)"
+            >
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
 
-            </td>
+          </td>
         </tr>
-    </tbody>
+      </tbody>
 
-</table>
+    </table>
+
+    <div class="paginate">
+      <pagination-controls
+        previousLabel="Anterior" 
+        nextLabel="Siguiente"
+        (pageChange)="onTableDataChange($event)"
+      >
+    </pagination-controls>
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<!-- Inicio modal editar -->
+
+<div class="modal fade" id="modal-editar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-secondary">
+        <h5 class="modal-title text-white" id="exampleModalLabel">Editar usuario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <form [formGroup]="form_usuario_editar" (ngSubmit)="update_usuario()">
+
+          <div class="row">
+            <div class="col">
+              <label for="">Nombre usuario</label>
+              <input *ngIf="usuario_editar" [(ngModel)]="usuario_editar.nombre" formControlName="nombre" type="text"
+                class="form-control">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <label for="">Rol</label>
+              <select *ngIf="usuario_editar" [(ngModel)]="usuario_editar.id_rol" formControlName="id_rol"
+                class="form-control">
+                <option selected value="" disabled>Seleccione un rol</option>
+                <option *ngFor="let rol of roles" [value]="rol.id">{{rol.nombre}}</option>
+              </select>
+
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <label for="">Activo</label>
+              <select *ngIf="usuario_editar" [(ngModel)]="usuario_editar.activo" formControlName="activo"
+                class="form-control">
+                <option selected value="" disabled>Seleccione activo</option>
+                <option *ngFor="let activo of activos" [value]="activo">{{activo}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <label for="">Correo</label>
+              <input *ngIf="usuario_editar" [(ngModel)]="usuario_editar.correo" formControlName="correo" type="text"
+                class="form-control">
+            </div>
+          </div>
+
+          <button class="btn btn-success mt-3 elevacion" data-bs-dismiss="modal">Guardar cambios</button>
+
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Final modal editar -->

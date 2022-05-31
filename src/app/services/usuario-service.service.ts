@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, Subject, catchError, throwError } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import Swal from 'sweetalert2';
 
 const URL = environment.API_USUARIO;
 
@@ -48,6 +49,7 @@ export class UsuarioServiceService {
       }),
       catchError(error=>{
         console.log(error);
+        this.mensaje_error('Hay valores ya registrado');
         return throwError(error);
       })
     );
@@ -61,6 +63,8 @@ export class UsuarioServiceService {
       }),
       catchError(error=>{
         console.log(error);
+        this.mensaje_error('Hay valores ya registrado');
+        this.refresh.next();
         return throwError(error);
       })
     );
@@ -78,5 +82,25 @@ export class UsuarioServiceService {
       })
     );
   }
+
+  getName(nombre:String):Observable<Usuario[]>{
+    return this.http.get<Usuario[]>(URL+"/filtro/"+nombre)
+    .pipe(
+      catchError(error=>{
+        console.log(error);
+        return throwError(error);
+      })
+    );
+  }
+
+  mensaje_error(text:String){
+    Swal.fire({
+      icon: 'error',
+      title: text,
+      showConfirmButton: false,
+      timer: 2000
+    })
+  }
+
 
 }
